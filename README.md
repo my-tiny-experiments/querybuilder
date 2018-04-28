@@ -38,14 +38,21 @@ you should define a public array variable named filterable.
 This should contain all your filters as filter id or key (from the jquery query builder filters) =>
 filter value.
 
+incase of ambiguous key you can add "as". so if I have table named industries and I want to query
+whereIn('id', [])...
+so the key should be 'filter_name_industries' => 'industries.id as industries'
+
 ``` php
 public $filterable = [
     'filter_name' => 'this.name',
     'filter_user_post_title' => 'posts.title',
     'filter_user_post_comment' => 'posts.comments.text',
+    'filter_industry' => 'industries.id as industries', // if there is ambiguous key.
+    // it is recommended to prepend the key with 'filter_'
 ];
 ```
 this means that the name source is the model itself.
 posts means that the title is from another relation named posts (posts) should be a function in the
 model that returns a relation..
 also comments is a function in Post that returns a relation..
+
