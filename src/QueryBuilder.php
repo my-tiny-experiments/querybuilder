@@ -79,8 +79,8 @@ class QueryBuilder
         foreach($rules as $key => $rule) {
             $tableName = $this->getTableName($this->filterable[$key]);
             $colName = $this->getColName($this->filterable[$key]);
-            $query->{$where}($tableName, function ($q) use ($rule, $condition){
-                $this->notRelQuery($q, $rule, $condition);
+            $query->{$where}($tableName, function ($q) use ($rules, $condition){
+                $this->notRelQuery($q, $rules, $condition);
             });
         }
     }
