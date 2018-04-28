@@ -26,7 +26,7 @@ class Filter
 
     private function separateRules($filters) {
         $filters = $this->parseJsonResult($filters);
-        $rules = $filters['rules'];
+        $rules = $filters['rules']?? [];
         $condition = $filters['condition'];
 
         $relationRules = [];
