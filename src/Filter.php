@@ -29,9 +29,9 @@ class Filter
 
         if(empty($filters)) return [];
 
-        $rules = $filters['rules'];
+        $rules = $filters['rules']??[];
 
-        $condition = $filters['condition'];
+        $condition = $filters['condition']?? '';
 
         $relationRules = [];
 
@@ -50,7 +50,7 @@ class Filter
                     $notRelationRules[$rule['id']][] = $rule;
                 }
             } else {
-                $nestedRules[] = $this->separateRules($rule['rules'], $rule['condition']);
+                $nestedRules[] = $this->separateRules($rule);
             }
         }
         return [
