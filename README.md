@@ -1,4 +1,4 @@
-# QueryBuilder for jQuery Query Builder
+# Laravel QueryBuilder for jQuery Query Builder
 ## [jQuery Query Builder](http://querybuilder.js.org/)
 
 this package is to build query form jQuery Query Builder library,
@@ -26,7 +26,8 @@ use hassanalisalem\querybuilder\Query;
 ...
 
 $model = new User();
-$query = Query::build($model, $filters);
+$rules = $request->rules; // rules from the jQuery query builder form.
+$query = Query::build($model, $rules);
 
 ```
 
