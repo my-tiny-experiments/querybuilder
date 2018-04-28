@@ -86,11 +86,15 @@ class QueryBuilder
     }
 
     private function notRelQuery(&$query, $rules, $condition) {
-        $first = true;
+        
         foreach($rules as $key => $rule) {
-            $col = $this->getColName($this->filterable[$rule['id']]);
-            $this->whereQuery($query, $first? 'AND': $condition, $col, $rule['operator'], $rule['value']);
-            $first = false;
+            $col = $this->getColName($this->filterable[$key]);
+            $first = true;
+            foreach($rule as $subRule) {
+                $this->whereQuery($query, $first? 'AND': $condition, $col, $subRule['operator'], $subRule['value']);
+                $first = false;
+            }
+            
         }
     }
 
