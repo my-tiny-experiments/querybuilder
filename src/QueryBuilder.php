@@ -86,7 +86,6 @@ class QueryBuilder
     }
 
     private function notRelQuery(&$query, $rules, $condition) {
-        
         foreach($rules as $key => $rule) {
             $col = $this->getColName($this->filterable[$key]);
             $first = true;
@@ -94,7 +93,6 @@ class QueryBuilder
                 $this->whereQuery($query, $first? 'AND': $condition, $col, $subRule['operator'], $subRule['value']);
                 $first = false;
             }
-            
         }
     }
 
@@ -104,9 +102,11 @@ class QueryBuilder
 
         if(!empty($rules['nested'])) {
             $where = $this->toOrAnd('where', $rules['condition']);
-            $query->{$where}(function ($q) use($rules) {
-                $this->query($q, $rules['nested'][0]);
-            });
+            foreach($rules['nested'] as $nestedRule) {
+                $query->{$where}(function ($q) use($nestedRule) {
+                    $this->query($q, $nestedRule);
+                });
+            }
         }
     }
 
