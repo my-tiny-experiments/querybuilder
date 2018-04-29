@@ -29,7 +29,7 @@ $model = new User();
 $rules = $request->rules; // rules from the jQuery query builder form.
 $query = Query::build($model, $rules);
 // you can use it as: $query->get() to get the query result
-// or to check the query string: $query->toSal()
+// or to check the query string: $query->toSql()
 
 ```
 
