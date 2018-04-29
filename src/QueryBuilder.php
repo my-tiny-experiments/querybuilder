@@ -88,6 +88,7 @@ class QueryBuilder
         foreach($rules as $key => $rule) {
             $col = $this->getColName($this->filterable[$key]);
             $first = true;
+            if(count($rule) == 1) $first = false;
             foreach($rule as $subRule) {
                 $this->whereQuery($query, $first? 'AND': $condition, $col, $subRule['operator'], $subRule['value']);
                 $first = false;
