@@ -1,3 +1,4 @@
+
 <?php
 namespace hassanalisalem\querybuilder;
 
@@ -64,8 +65,12 @@ class QueryBuilder
 
         if(in_array($operator, ['=', '>', '<', '>=', '<='])) {
             $query->{$where}($col, $operator, $value);
-        } elseif(in_array($operator, ['in', 'not_in', 'between', 'not_between'])) {
+        } elseif(in_array($operator, ['in', 'not_in'])) {
             $query->{$where}($col, $value);
+        } elseif(in_array($operator, ['between', 'not_between'])) {
+            $query->where(function ($q) use ($col, $value, $where) {
+                $q->{$where}($col, $value);
+            });
         } elseif(in_array($operator, ['like'])) {
             $query->{$where}($col, 'like',  '%' . $value . '%');
         } elseif(in_array($operator, ['is_null', 'is_not_null'])) {
