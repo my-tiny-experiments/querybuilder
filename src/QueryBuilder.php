@@ -6,7 +6,7 @@ class QueryBuilder
 {
 
     /**
-     * a dectionary of operators, from jQueryQueryBuilder 
+     * a dictionary of operators, from jQueryQueryBuilder 
      * @param Array
      */
     private $operators = [
