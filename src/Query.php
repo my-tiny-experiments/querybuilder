@@ -3,7 +3,8 @@ namespace hassanalisalem\querybuilder;
 
 class Query
 {
-    public static function build($model, $filters, $query = null) {
+    public static function build($model, $filters, $query = null)
+    {
         $query = $query? $query: $model->newQuery();
         $filterable = $model->filterable;
 

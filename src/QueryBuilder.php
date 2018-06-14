@@ -5,12 +5,22 @@ namespace hassanalisalem\querybuilder;
 class QueryBuilder
 {
 
-    function __construct(&$query, $filterable) {
+    private $operators = [
+        'equal' => '=', 'in' => 'in', 'not_in' => 'not_in', 'not_equal' => '!=',
+        'less' => '<', 'less_or_equal' => '<=', 'greater' => '>',
+        'greater_or_equal' => '>=', 'between' => 'between',
+        'not_between' => 'not_between', 'is_null' => 'is_null',
+        'is_not_null' => 'is_not_null', 'contains' => 'like',
+    ];
+
+    function __construct(&$query, $filterable)
+    {
         $this->query = $query;
         $this->filterable = $filterable;
     }
 
-    private function parseKey($key) {
+    private function parseKey($key)
+    {
         $parts = explode('.', $key);
         $col = array_pop($parts);
         $table = implode('.', $parts);
@@ -26,7 +36,8 @@ class QueryBuilder
         ];
     }
 
-    private function getColName($key) {
+    private function getColName($key)
+    {
         return $this->parseKey($key)['col'];
     }
 
@@ -34,7 +45,8 @@ class QueryBuilder
         return $this->parseKey($key)['table'];
     }
 
-    private function toOrAnd($text, $condition = null) {
+    private function toOrAnd($text, $condition = null)
+    {
         if(!$condition || strtolower($condition) == 'and') return $text;
         $result = strtolower($condition) . ucfirst($text);
         return $result;
@@ -51,14 +63,9 @@ class QueryBuilder
         return $result;
     }
 
-    private function whereQuery(&$query, $condition, $col, $operator, $value) {
-        $operators = [
-            'equal' => '=', 'in' => 'in', 'not_in' => 'not_in', 'not_equal' => '!=',
-            'less' => '<', 'less_or_equal' => '<=', 'greater' => '>',
-            'greater_or_equal' => '>=', 'between' => 'between',
-            'not_between' => 'not_between', 'is_null' => 'is_null',
-            'is_not_null' => 'is_not_null', 'contains' => 'like',
-        ];
+    private function whereQuery(&$query, $condition, $col, $operator, $value)
+    {
+        $operators = $this->operators;
 
         $operator = $operators[$operator];
         $where = $this->getWhereType($operator, $condition);
@@ -79,7 +86,8 @@ class QueryBuilder
     }
 
 
-    private function relQuery(&$query, $rules, $condition) {
+    private function relQuery(&$query, $rules, $condition)
+    {
         $where = $this->toOrAnd('where', $condition). 'Has';
         foreach($rules as $key => $rule) {
             $tableName = $this->getTableName($this->filterable[$key]);
@@ -89,7 +97,8 @@ class QueryBuilder
         }
     }
 
-    private function notRelQuery(&$query, $rules, $condition) {
+    private function notRelQuery(&$query, $rules, $condition)
+    {
         foreach($rules as $key => $rule) {
             $col = $this->getColName($this->filterable[$key]);
             $first = true;
@@ -108,7 +117,8 @@ class QueryBuilder
         if(!empty($rules['nested'])) {
             $where = $this->toOrAnd('where', $rules['condition']);
             foreach($rules['nested'] as $nestedRule) {
-                $query->{$where}(function ($q) use($nestedRule) {
+                $query->{$where}(function ($q) use($nestedRule)
+                {
                     $this->query($q, $nestedRule);
                 });
             }
